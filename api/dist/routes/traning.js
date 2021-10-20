@@ -1,0 +1,1 @@
+//# sourceMappingURL=traning.js.map

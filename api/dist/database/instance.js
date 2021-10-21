@@ -14,7 +14,8 @@ const graphql_request_1 = require("graphql-request");
 require("../config");
 const qfetch = (req, body = {}) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const data = yield (0, graphql_request_1.request)(process.env.ENDPOINT, req, body);
+        const url = process.env.ENDPOINT;
+        const data = yield (0, graphql_request_1.request)("http://localhost:8080/v1/graphql", req, body);
         return data;
     }
     catch (e) {

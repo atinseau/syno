@@ -26,9 +26,11 @@ export const injectSynonym = async () => {
 
 	let words = (await getAllWord()).filter(e => e.synonym_ids == null)
 
+	let stop = false
+
 	console.log("Loading...")
 
-	while(words.length > 1000) {
+	while(!stop) {
 		for (const entry of words) {
 			let synonyms = await getSynonym(entry.word)
 			if (synonyms.length > 5) {
@@ -51,11 +53,13 @@ export const injectSynonym = async () => {
 			}
 		}
 		words = (await getAllWord()).filter(e => e.synonym_ids == null)
+		if (words.length < 1000)
+			stop = true
 	}
 
 	console.log("db seeded !")
 
-	if (!browser)
+	if (browser != null)
 		await browser.close();
 }
 

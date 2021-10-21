@@ -26,7 +26,7 @@ const getWordById = (id) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.getWordById = getWordById;
 const getAllWord = () => __awaiter(void 0, void 0, void 0, function* () {
-    const { words } = yield (0, instance_1.qfetch)((0, graphql_request_1.gql) `
+    const words = yield (0, instance_1.qfetch)((0, graphql_request_1.gql) `
 		query MyQuery {
 			words {
 				id
@@ -35,7 +35,9 @@ const getAllWord = () => __awaiter(void 0, void 0, void 0, function* () {
 			}
 		}
 	`);
-    return words;
+    if (words == null)
+        return null;
+    return words[Object.keys(words)[0]];
 });
 exports.getAllWord = getAllWord;
 const insertWord = (word) => __awaiter(void 0, void 0, void 0, function* () {
@@ -50,8 +52,10 @@ const insertWord = (word) => __awaiter(void 0, void 0, void 0, function* () {
 			}
 		}
 	`, { word: word.word });
-    if (words)
+    if (words != null) {
+        console.log("insert word");
         return words.insert_words.returning[0];
+    }
     return null;
 });
 exports.insertWord = insertWord;
@@ -68,6 +72,8 @@ const updateWord = (id, synonym_ids) => __awaiter(void 0, void 0, void 0, functi
 			}
 		}
 	`, { _eq: id, synonym_ids: synonym_ids });
+    if (update != null)
+        console.log("update word");
     return update;
 });
 exports.updateWord = updateWord;
@@ -79,6 +85,8 @@ const deleteWord = (id) => __awaiter(void 0, void 0, void 0, function* () {
 			}
 		}
 	`, { _eq: id });
+    if (del != null)
+        console.log("delete word");
     return del;
 });
 exports.deleteWord = deleteWord;

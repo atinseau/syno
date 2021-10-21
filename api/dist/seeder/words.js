@@ -13,7 +13,7 @@ exports.removeWord = exports.seedWord = void 0;
 const fs_1 = require("fs");
 const promises_1 = require("fs/promises");
 const word_1 = require("../model/word");
-const PATH = "/Users/arthurtinseau/Desktop/Dev/REACT_NATIVE/syno/api";
+const PATH = "/home/arthur/Desktop/Dev/REACT_NATIVE/syno/api";
 const getWordJSON = () => __awaiter(void 0, void 0, void 0, function* () {
     const SOURCE = "nietzche";
     // CHECK IF DB WORD EXIST
@@ -41,17 +41,24 @@ const getWordJSON = () => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 const seedWord = () => __awaiter(void 0, void 0, void 0, function* () {
-    for (const entry of yield getWordJSON()) {
+    const words = yield getWordJSON();
+    for (const entry of words) {
         yield (0, word_1.insertWord)(entry);
     }
+    console.log("All word seeded");
 });
 exports.seedWord = seedWord;
 const removeWord = () => __awaiter(void 0, void 0, void 0, function* () {
     const words = yield (0, word_1.getAllWord)();
-    for (const word of words) {
-        yield (0, word_1.deleteWord)(word.id);
+    if (words != null) {
+        for (const word of words) {
+            yield (0, word_1.deleteWord)(word.id);
+        }
+        console.log("All word cleaned");
     }
-    console.log("All word cleaned");
+    else {
+        console.log("Aleardy empty");
+    }
 });
 exports.removeWord = removeWord;
 //# sourceMappingURL=words.js.map

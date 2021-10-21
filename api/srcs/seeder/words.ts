@@ -4,7 +4,7 @@ import { readFile } from 'fs/promises';
 import { deleteWord, getAllWord, insertWord } from '../model/word';
 
 
-const PATH = "/Users/arthurtinseau/Desktop/Dev/REACT_NATIVE/syno/api"
+const PATH = "/home/arthur/Desktop/Dev/REACT_NATIVE/syno/api"
 
 interface WordInstance {
 	word: String,
@@ -45,17 +45,23 @@ const getWordJSON = async (): Promise<WordInstance[]> => {
 }
 
 export const seedWord = async () => {
-	for (const entry of await getWordJSON()) {
+	const words = await getWordJSON();
+
+	for (const entry of words) {
 		await insertWord(entry)
 	}
+	console.log("All word seeded")
 }
 
 export const removeWord = async () => {
 	const words = await getAllWord()
 
-	for (const word of words) {
-		await deleteWord(word.id)
+	if (words != null) {
+		for (const word of words) {
+			await deleteWord(word.id)
+		}	
+		console.log("All word cleaned")
+	} else {
+		console.log("Aleardy empty")
 	}
-
-	console.log("All word cleaned")
 }

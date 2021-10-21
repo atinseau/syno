@@ -32,8 +32,9 @@ const getSynonym = (word) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getSynonym = getSynonym;
 const injectSynonym = () => __awaiter(void 0, void 0, void 0, function* () {
     let words = (yield (0, word_1.getAllWord)()).filter(e => e.synonym_ids == null);
+    let stop = false;
     console.log("Loading...");
-    while (words.length > 1000) {
+    while (!stop) {
         for (const entry of words) {
             let synonyms = yield (0, exports.getSynonym)(entry.word);
             if (synonyms.length > 5) {
@@ -57,9 +58,11 @@ const injectSynonym = () => __awaiter(void 0, void 0, void 0, function* () {
             }
         }
         words = (yield (0, word_1.getAllWord)()).filter(e => e.synonym_ids == null);
+        if (words.length < 1000)
+            stop = true;
     }
     console.log("db seeded !");
-    if (!browser)
+    if (browser != null)
         yield browser.close();
 });
 exports.injectSynonym = injectSynonym;

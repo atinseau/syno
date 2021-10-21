@@ -22,7 +22,7 @@ export const getWordById = async (id: String): Promise<Word> => {
 }
 
 export const getAllWord = async (): Promise<Word[]> => {
-	const { words } = await qfetch(gql`
+	const words = await qfetch(gql`
 		query MyQuery {
 			words {
 				id
@@ -31,7 +31,9 @@ export const getAllWord = async (): Promise<Word[]> => {
 			}
 		}
 	`)
-	return words
+	if (words == null)
+		return null
+	return words[Object.keys(words)[0]]
 }
 
 export const insertWord = async (word: Word): Promise<Word | null> => {
@@ -46,8 +48,10 @@ export const insertWord = async (word: Word): Promise<Word | null> => {
 			}
 		}
 	`, { word: word.word })
-	if (words)
+	if (words != null) {
+		console.log("insert word")
 		return words.insert_words.returning[0]
+	}
 	return null
 }
 
@@ -64,6 +68,8 @@ export const updateWord = async (id: String, synonym_ids: String[]): Promise<Wor
 			}
 		}
 	`, { _eq: id, synonym_ids: synonym_ids })
+	if (update != null)
+		console.log("update word")
 	return update
 }
 
@@ -75,5 +81,7 @@ export const deleteWord = async (id: String): Promise<Word> => {
 			}
 		}
 	`, { _eq: id })
+	if (del != null)
+		console.log("delete word")
 	return del
 }

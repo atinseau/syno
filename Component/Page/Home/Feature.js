@@ -1,31 +1,31 @@
-import React from 'react'
+import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-const Feature = () => {
+const Feature = forwardRef(({ }, ref) => {
 
-	const features = [
+	const [features, setFeatures] = useState([
+		{
+			name: "Découvrir",
+			active: true
+		},
 		{
 			name: "Entrainement",
-			active: true,
-			callback: () => {
-
-			}
+			active: false
 		},
 		{
 			name: "Apprentissage",
-			active: false,
-			callback: () => {
-				
-			}
+			active: false
 		},
 		{
 			name: "Révision",
-			active: false,
-			callback: () => {
-				
-			}
+			active: false
 		}
-	]
+	]) 
+
+	useImperativeHandle(ref, () => ({
+		features: features,
+		setFeatures: setFeatures
+	}))
 
 	return (
 		<View style={styles.feature}>
@@ -33,6 +33,11 @@ const Feature = () => {
 				{features.map((feature, index) =>
 					<Pressable key={index} style={{...styles.cta, 
 						backgroundColor: (feature.active) ? 'black' : '#f7f7f7'
+					}} onPress={() => {
+						setFeatures((state) => state.map((e, i) => {
+							e.active = (index == i)
+							return e
+						}))
 					}}>
 						<Text style={{...styles.ctaText, 
 							color: (feature.active) ? 'white' : 'black'
@@ -42,7 +47,7 @@ const Feature = () => {
 			</ScrollView>
 		</View>
 	)
-}
+})
 
 const styles = StyleSheet.create({
 	feature: {

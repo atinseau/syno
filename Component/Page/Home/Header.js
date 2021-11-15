@@ -1,16 +1,18 @@
 
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import SvgSearch from "../Svg/SvgSearch";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { SvgSearch } from "../../Svg";
 
-const Header = () => {
+const Header = ({toggle}) => {
 	return (
 		<View style={styles.main}>
 			<View>
 				<Text style={styles.heading}>Choisir quoi</Text>
 				<Text style={styles.leading}>faire aujourd'hui ?</Text>
 			</View>
-			<SvgSearch style={styles.search} />
+			<Pressable onPress={() => toggle(true)}>
+				<SvgSearch style={styles.search} />
+			</Pressable>
 		</View>
 	)
 }

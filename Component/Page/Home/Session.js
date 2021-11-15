@@ -1,23 +1,33 @@
 
 
-import React from 'react'
+import { useStoreActions } from 'easy-peasy'
+import React, { useEffect } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
-import SvgBook from '../Svg/SvgBook'
-import SvgPlay from '../Svg/SvgPlay'
+import { SvgBook, SvgPlay } from '../../Svg'
 
-const Session = () => {
+const Session = ({ navigation, featureRef }) => {
+
+	const setNavigationMode = useStoreActions((actions) => actions.setNavigationMode)
+
+	useEffect(() => {
+		console.log(featureRef.current.features)
+	}, [featureRef])
+
 	return (<View style={styles.main}>
 		<View>
 			<View style={styles.header}>
 				<Text style={styles.heading}>Synonyme</Text>
-				<Text style={styles.leading}>Découvrir 20 nouveau mots</Text>
+				<Text style={styles.leading}>Découvrir 5 nouveau mots</Text>
 			</View>
 
 			<Pressable style={button.main}>
-				<View style={button.view}>
+				<Pressable style={button.view} onPress={() => {
+					setNavigationMode('push')
+					navigation.navigate('Discover')
+				}}>
 					<Text style={button.text}>Commencez</Text>
 					<SvgPlay style={button.svg}></SvgPlay>
-				</View>
+				</Pressable>
 			</Pressable>
 		</View>
 

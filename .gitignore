@@ -58,7 +58,3 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
-
-
-api/node_modules
-api/volumes

@@ -1,11 +1,13 @@
+import { useNavigation } from "@react-navigation/core";
 import React from "react";
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
-import SvgHistory from "../Svg/SvgHistory";
-import SvgRandom from "../Svg/SvgRandom";
-import SvgTest from "../Svg/SvgTest";
+import { api } from "../../../store";
+import { SvgHistory, SvgRandom, SvgTest, SvgSetting } from "../../Svg";
 
 
-const Suggestion = () => {
+const Suggestion = ({ rootNavigation }) => {
+
+	const navigation = useNavigation()
 
 	const suggestions = [
 		{
@@ -16,7 +18,11 @@ const Suggestion = () => {
 		},
 		{
 			name: "Mot aléatoire",
-			time: "10 minutes",
+			callback: async () => {
+				const word = await api.getWord()
+				navigation.navigate("definition", { id: word.id })
+			},
+			time: "1 minutes",
 			logo: SvgRandom,
 			color: '#5447b6'
 		},
@@ -25,6 +31,15 @@ const Suggestion = () => {
 			time: "15 minutes",
 			logo: SvgTest,
 			color: '#e8915c'
+		},
+		{
+			name: "Réglage utilisateur",
+			callback: () => {
+				rootNavigation.navigate('Settings')
+			},
+			time: "1 minutes",
+			logo: SvgSetting,
+			color: "#a1bce9"
 		}
 	]
 
@@ -32,7 +47,8 @@ const Suggestion = () => {
 		<View style={styles.main}>
 			<Text style={styles.heading}>Recommendation</Text>
 			<ScrollView style={styles.container}>
-				{suggestions.map((suggestion, index) => <Pressable style={card.button} key={index}>
+				{suggestions.map((suggestion, index) => <Pressable style={card.button} key={index} onPress={() => 
+				(typeof suggestion.callback == 'function') ? suggestion.callback() : null }>
 					<View style={{...card.imageContainer, backgroundColor: suggestion.color}}>
 						<suggestion.logo style={card.image}></suggestion.logo>
 					</View>
@@ -62,6 +78,7 @@ const styles = StyleSheet.create({
 
 const card = StyleSheet.create({
 	button: {
+		borderRadius: 10,
 		flexDirection: 'row',
 		alignItems: 'center',
 		marginBottom: 12,

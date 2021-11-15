@@ -5,25 +5,87 @@
  * @format
  * @flow strict-local
  */
- import PushNotificationIOS from "@react-native-community/push-notification-ios";
- import PushNotification from "react-native-push-notification";
+import PushNotificationIOS from "@react-native-community/push-notification-ios";
+import PushNotification from "react-native-push-notification";
 
+import React, { useEffect, useState } from 'react';
+
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useStoreState } from 'easy-peasy';
+import { api, observable } from './store';
 import { StoreProvider } from 'easy-peasy';
-import React, { useEffect } from 'react';
+import { useNavigationContainerRef } from "@react-navigation/core";
 
-import Home from './Component/Home';
-import { observable } from './store/user';
+import Settings from "./Component/Page/Settings";
+import Home from "./Component/Page/Home";
+import Startup from "./Component/Startup/index";
+import Loader from "./Component/Tool/Loader";
+import Discover from "./Component/Page/Discover";
 
-
+const HomeStack = createNativeStackNavigator()
+const defaultView = {
+	headerShown: false,
+	contentStyle: {
+		backgroundColor: 'white'
+	}
+}
 
 const App = () => {
-
 	return (
 		<StoreProvider store={observable}>
-			<Home/>
+			<Root/>
 		</StoreProvider>
-	); 
+	)
 };
+
+const Root = () => {
+
+	const update = useStoreState((state) => state.update)
+	const navigationMode = useStoreState((state) => state.navigationMode)
+	const [loaded, setLoaded] = useState(false)
+	const [isAuth, setAuth] = useState(false)
+	const navigatorRef = useNavigationContainerRef()
+
+	useEffect(() => {
+		api.isAuth()
+		.then(() => setAuth(true))
+		.catch(() => setAuth(false))
+		.finally(() => {
+			if (!loaded)
+				setLoaded(true)
+		})
+	}, [update])
+
+	useEffect(() => {
+		if (navigatorRef.isReady() && loaded && !isAuth) {
+			console.log("Is not auth so redirect to Login/Register page")
+			navigatorRef.navigate('Startup')
+		}
+	}, [isAuth, loaded])
+
+	return (
+		<NavigationContainer ref={navigatorRef}>
+			<HomeStack.Navigator 
+			initialRouteName="Home" 
+			screenOptions={{
+				presentation: navigationMode,
+				headerBackVisible: false
+			}}>
+				{loaded ? <>
+					{/* NAVIGATION */}
+					<HomeStack.Screen component={Home} name="Home" options={defaultView}/>
+					<HomeStack.Screen component={Settings} name="Settings" options={defaultView}/>
+					<HomeStack.Screen component={Discover} name="Discover" options={defaultView}/>
+					{/* AUTH CONTROLLER GUARD */}
+					<HomeStack.Screen component={Startup} name="Startup" options={{...defaultView, gestureEnabled: isAuth}}/>
+					</> : 
+					<HomeStack.Screen component={Loader} name="Loading" options={defaultView}/> // LOADER
+				}
+			</HomeStack.Navigator>
+		</NavigationContainer>
+	)
+}
 
 // PushNotification.localNotification({
 // 	/* iOS and Android properties */
@@ -87,9 +149,5 @@ const App = () => {
 //    */
 //   requestPermissions: true,
 // });
-
-
-
- 
 
 export default App;

@@ -10,14 +10,17 @@ const Input = ({
 	title = "Title", 
 	placeholder = "Placeholder", 
 	type= "email-address", 
-	style = {}, 
+	viewStyle = {},
+	inputStyle = {},
+	textStyle = {},
 	onChange = () => {},
 	onFocus = () => {}, 
-	onBlur = () => {}
+	onBlur = () => {},
+	onKeyPress = () => {}
 }) => {
 	return (
-		<View style={{...styles.main, ...style}}>
-			<Text style={styles.heading}>{title}</Text>
+		<View style={{...styles.main, ...viewStyle}}>
+			<Text style={{...styles.heading, ...textStyle}}>{title}</Text>
 			<TextInput
 			value={value}
 			placeholder={placeholder}
@@ -27,7 +30,10 @@ const Input = ({
 			returnKeyType="done"
 			onFocus={onFocus}
 			onBlur={onBlur}
-			onChangeText={onChange} />
+			style={inputStyle}
+			onChangeText={onChange}
+			onKeyPress={onKeyPress}	
+		/>
 		</View>
 	)
 }

@@ -1,13 +1,8 @@
 
-import axios from 'axios';
-import React, { useState } from 'react';
-import { Alert, Pressable,  StyleSheet, Text, View } from 'react-native';
-import { store } from '../../store/user';
-import SvgBook from '../Svg/SvgBook';
-import SvgUser from '../Svg/SvgUser';
-import Input from './Input';
-
-import { API } from '@env'
+import React, { useRef, useState } from 'react';
+import {  Pressable,  StyleSheet, Text, View } from 'react-native';
+import { SvgBack, SvgBook } from '../Svg';
+import Auth from './Auth';
 
 
 const Startup = ({ navigation }) => {
@@ -15,10 +10,9 @@ const Startup = ({ navigation }) => {
 
 	const [index, setIndex] = useState(0)
 	const [header, setHeader] = useState(true)
+	const [loginMode, setLoginMode] = useState(false)
 
-	const [email, setEmail] = useState("arthurtweak@gmail.com")
-	const [name, setName] = useState("arthur")
-	const [password, setPassword] = useState("06112001")
+	const authRef = useRef();
 
 	const nextPage = () => {
 		if (index + 1 < slider.length)
@@ -38,114 +32,64 @@ const Startup = ({ navigation }) => {
 		}, 
 		{
 			text: "S'inscrire",
-			callback: async () => {
-
-				const alertConf = [{
-					style: 'destructive',
-					text: "Ressayer"
-				}]
-
-				if (email == "" || !email.includes('@') || (await axios.post(API + "/auth/email-is-taken", { email })).data.status)
-					return Alert.alert("Email invalide", "merci d'entrer un email valide (invalide ou déjà utiliser)", alertConf)
-				if (name == "" || (await axios.post(API + "/auth/username-is-taken", { username: name })).data.status)
-					return Alert.alert("Nom d'utilisateur invalide", "merci d'entrer un nom d'utilisateur valide (invalide ou déjà utiliser)", alertConf)
-				if (password == "" || password.length < 8)
-					return Alert.alert("Mot de passe invalide", "merci d'entrer un mot de passe valide", alertConf)
-
-				const { data } = await axios.post(API + "/auth/register", {
-					username: name,
-					email,
-					password
-				})
-
-				if (typeof data.status == "undefined" && data.email == email && data.username == name) {
-
-					const { data } = await axios.post(API + "/auth/login", { username: name, password })
-
-					if (typeof data.status == "undefined" && typeof data.token != 'undefined') {
-						store.setToken(data.token).then(() => {
-							navigation.navigate('home')
-						})
-					}
-
-				}
-
+			callback: () => {
+				authRef.current.submit()
 			},
-			component:
-			<>
-				<SvgUser style={form.user}/>
-				<Text style={form.heading}>Bienvenue dans Meilleur mot</Text>
-				<Text style={form.leading}>Entrer vos données de connexion</Text>
-
-				<Input
-					value={email}
-					title="Email"
-					placeholder="Entrer votre email"
-					onChange={(value) => setEmail(value)}
-					style={form.email}
-					onBlur={() => setHeader(true)}
-					onFocus={() => setHeader(false)}
-				/>
-
-				<Input
-					value={name}
-					title="Nom d'utilisateur"
-					type="default"
-					placeholder="Entrer votre pseudo"
-					onChange={(value) => setName(value)}
-					onBlur={() => setHeader(true)}
-					onFocus={() => setHeader(false)}
-				/>
-
-				<Input
-					value={password}
-					title="Mot de passe"
-					placeholder="Taper votre mot de passe"
-					onChange={(value) => setPassword(value)}
-					type="default"
-					style={form.password}
-					onBlur={() => setHeader(true)}
-					onFocus={() => setHeader(false)}
-				/>
-			</>
+			component: <Auth ref={authRef} navigation={navigation} loginMode={loginMode} setHeader={setHeader}/>
 		}
 	]
 
 	return (
 		<View style={styles.main}>
-			{header ? <Text style={styles.heading}>Meilleur mot</Text> : null}
+			{header ? <View style={styles.header}>
+				{ index == 1 && loginMode ? <Pressable style={styles.return} onPress={() => setLoginMode(false)}>
+					<SvgBack style={styles.svg}/>
+				</Pressable> : null }
+				<Text style={styles.heading}>Meilleur mot</Text>
+			</View> : null}
 			
-			<View style={{...container.main, flex: (header) ? 1: 0}}>
+			<View style={{...container.main, flex: (header) ? 1 : 0}}>
 				{slider[index].component}
 			</View>
 
-			<Pressable style={styles.button} onPress={slider[index].callback}>
-				<Text style={styles.buttonText}>{slider[index].text}</Text>
-			</Pressable>
+			<View style={button.main}>
+				{!loginMode ? <Pressable style={button.container} onPress={slider[index].callback}>
+					<Text style={button.text}>{slider[index].text}</Text>
+				</Pressable>: null }
+
+				{index == 1 ? <Pressable style={button.container} onPress={() => {
+					(!loginMode) ? setLoginMode(true) : slider[index].callback()
+				}}>
+					<Text style={button.text}>Connexion</Text>
+				</Pressable> : null}
+			</View>
 		</View>
 	)
 }
 
-const form = StyleSheet.create({
-	user: {
-		width: 100,
-		height: 100,
-		color: "#5547b6",
-		marginBottom: 10
+
+const button = StyleSheet.create({
+	main: {
+		width: '100%',
+		justifyContent: 'center',
+		alignSelf: 'center',
+		position: 'absolute',
+		flexDirection: 'row',
+		bottom: 30
 	},
-	heading: {
+	container: {
+		marginHorizontal: 10,
+		borderRadius: 500,
+		marginBottom: 30,
+		backgroundColor: '#5547b6',
+		alignSelf: 'center'
+	},
+	text: {
+		color: 'white',
 		fontSize: 20,
-		marginBottom: 6,
-		fontWeight: '700'
-	},
-	leading: {
-		color: 'grey',
-		fontSize: 12,
-		fontWeight: '400',
-		marginBottom: 30
-	},
-	password: {
-		marginBottom: 150
+		fontWeight: '700',
+		paddingVertical: 16,
+		paddingHorizontal: 30
 	}
 })
 
@@ -180,26 +124,28 @@ const styles = StyleSheet.create({
 		padding: 20,
 		flex: 1
 	},
+	header: {
+		position: 'relative',
+		width: '100%',
+		alignItems: 'center',
+		flexDirection: 'row'
+	},
+	return: {
+		zIndex: 1,
+		position: 'absolute',
+		top: 30,
+		width: 34,
+		height: 34
+	},
+	svg: {
+		color: "#5547b6"
+	},
 	heading: {
+		flex: 1,
 		fontSize: 30,
 		fontWeight: '700',
 		textAlign: 'center',
 		marginTop: 30
-	},
-	button: {
-		position: 'absolute',
-		bottom: 30,
-		borderRadius: 500,
-		marginBottom: 30,
-		backgroundColor: '#5547b6',
-		alignSelf: 'center'
-	},
-	buttonText: {
-		color: 'white',
-		fontSize: 20,
-		fontWeight: '700',
-		paddingVertical: 16,
-		paddingHorizontal: 30
 	}
 })
 

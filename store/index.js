@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { action, createStore } from "easy-peasy";
+import { Platform } from 'react-native';
 
 export const observable = createStore({
 	update: false,
@@ -8,7 +9,8 @@ export const observable = createStore({
 		state.update = !state.update
 	}),
 	setNavigationMode: action((state, payload = 'modal') => {
-		state.navigationMode = payload
+		if (Platform.OS === "ios")
+			state.navigationMode = payload
 	})
 })
 

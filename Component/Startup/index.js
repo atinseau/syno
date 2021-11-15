@@ -1,6 +1,6 @@
 
 import React, { useRef, useState } from 'react';
-import {  Pressable,  StyleSheet, Text, View } from 'react-native';
+import {  KeyboardAvoidingView, Pressable,  StyleSheet, Text, View } from 'react-native';
 import { SvgBack, SvgBook } from '../Svg';
 import Auth from './Auth';
 
@@ -40,30 +40,32 @@ const Startup = ({ navigation }) => {
 	]
 
 	return (
-		<View style={styles.main}>
-			{header ? <View style={styles.header}>
-				{ index == 1 && loginMode ? <Pressable style={styles.return} onPress={() => setLoginMode(false)}>
-					<SvgBack style={styles.svg}/>
-				</Pressable> : null }
-				<Text style={styles.heading}>Meilleur mot</Text>
-			</View> : null}
-			
-			<View style={{...container.main, flex: (header) ? 1 : 0}}>
-				{slider[index].component}
-			</View>
+		<KeyboardAvoidingView style={{flex: 1}} behavior={"padding"}>
+			<View style={styles.main}>
+				{header ? <View style={styles.header}>
+					{ index == 1 && loginMode ? <Pressable style={styles.return} onPress={() => setLoginMode(false)}>
+						<SvgBack style={styles.svg}/>
+					</Pressable> : null }
+					<Text style={styles.heading}>Meilleur mot</Text>
+				</View> : null}
+				
+				<View style={{...container.main}}>
+					{slider[index].component}
+				</View>
 
-			<View style={button.main}>
-				{!loginMode ? <Pressable style={button.container} onPress={slider[index].callback}>
-					<Text style={button.text}>{slider[index].text}</Text>
-				</Pressable>: null }
+				{header ? 	<View style={button.main}>
+					{!loginMode ? <Pressable style={button.container} onPress={slider[index].callback}>
+						<Text style={button.text}>{slider[index].text}</Text>
+					</Pressable>: null }
 
-				{index == 1 ? <Pressable style={button.container} onPress={() => {
-					(!loginMode) ? setLoginMode(true) : slider[index].callback()
-				}}>
-					<Text style={button.text}>Connexion</Text>
-				</Pressable> : null}
+					{index == 1 ? <Pressable style={button.container} onPress={() => {
+						(!loginMode) ? setLoginMode(true) : slider[index].callback()
+					}}>
+						<Text style={button.text}>Connexion</Text>
+					</Pressable> : null}
+				</View> : null}
 			</View>
-		</View>
+		</KeyboardAvoidingView>
 	)
 }
 
@@ -95,6 +97,7 @@ const button = StyleSheet.create({
 
 const container = StyleSheet.create({
 	main: {
+		marginTop: 40,
 		flexDirection: 'column',
 		alignItems: 'center',
 		justifyContent: 'center',
@@ -106,6 +109,7 @@ const container = StyleSheet.create({
 		marginBottom: 26
 	},
 	heading: {
+		color: "black",
 		textAlign: 'center',
 		fontSize: 24,
 		marginBottom: 10,
@@ -125,6 +129,7 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	header: {
+		color: "black",
 		position: 'relative',
 		width: '100%',
 		alignItems: 'center',
@@ -141,6 +146,7 @@ const styles = StyleSheet.create({
 		color: "#5547b6"
 	},
 	heading: {
+		color: "black",
 		flex: 1,
 		fontSize: 30,
 		fontWeight: '700',

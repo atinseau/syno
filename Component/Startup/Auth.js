@@ -85,6 +85,7 @@ const Auth = forwardRef(({ navigation, loginMode, setHeader }, ref) => {
 	return (
 		<>
 			{!loginMode ? <SvgUser style={form.user}/> : <SvgRegularUser style={{...form.user, marginBottom: 20}}/>}
+			
 			<Text style={form.heading}>Bienvenue dans Meilleur mot</Text>
 			<Text style={form.leading}>{!loginMode ? "Entrer vos données d'inscription" : "Entrer vos données de connexion"}</Text>
 
@@ -93,7 +94,6 @@ const Auth = forwardRef(({ navigation, loginMode, setHeader }, ref) => {
 				title="Email"
 				placeholder="Entrer votre email"
 				onChange={(value) => setEmail(value)}
-				viewStyle={form.email}
 				onBlur={() => setHeader(true)}
 				onFocus={() => setHeader(false)}
 			/>: null}
@@ -131,6 +131,7 @@ const form = StyleSheet.create({
 		marginBottom: 10
 	},
 	heading: {
+		color: "black",
 		fontSize: 20,
 		marginBottom: 6,
 		fontWeight: '700'

@@ -54,27 +54,24 @@ const Definition = ({ route }) => {
 	useEffect(() => {
 		let mounted = true
 		
+		if (!word)
+			return;
+
 		;(async () => {
-			if (!word)
-				return;
-			if (word.word.split(' ').length > 2) {
-				setError(true)
-				return;
-			}
+			if (word.word.split(' ').length > 2)
+				return setError(true)
+		
 			let defs = null
+
 			if (!word.definition) {
 				const definition = await api.getDicoDefinition(word.word)
-				if (!definition) {
-					setError(true)
-					return;
-				}
-				const data = await api.insertDefinition(word.id, definition)
-				if (typeof data.status == 'undefined')
-					defs = data
+				if (!definition)
+					return setError(true)
+				defs = await api.insertDefinition(word.id, definition)
 			}
 			if (!defs)
 				defs = await api.getDefinition(word.id)
-
+			
 			if (mounted) {
 				setHistoryWord({...word, definition: defs})
 				setDefs(defs)

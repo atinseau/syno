@@ -23,8 +23,9 @@ const SearchOverlay = ({toggle = () => {}, isOpen = true}) => {
 					query: search,
 					token: token
 				})
-				if (mounted)
+				if (mounted) {
 					setResults(data)
+				}
 			}
 		}).catch(() => console.log("Unauth"))
 		return () => mounted = false

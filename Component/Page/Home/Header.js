@@ -24,9 +24,11 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	heading: {
+		color: "black",
 		fontSize: 26
 	},
 	leading: {
+		color: "black",
 		fontSize: 28,
 		fontWeight: '900'
 	},

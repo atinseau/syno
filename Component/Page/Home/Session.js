@@ -93,6 +93,7 @@ const button = StyleSheet.create({
 		height: 16
 	},
 	text: {
+		color: 'black',
 		fontWeight: '500',
 		fontSize: 12,
 		marginRight: 10,

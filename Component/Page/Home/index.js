@@ -1,10 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useStoreState } from 'easy-peasy';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
-import { api, store } from '../../../store';
-import { navigate } from '../../Tool/rootNavigator';
 import SearchOverlay from '../../Tool/SearchOverlay';
 import Definition from '../Definition';
 

@@ -88,10 +88,12 @@ const card = StyleSheet.create({
 		padding: 12
 	},
 	heading: {
+		color: 'black',
 		fontSize: 14,
 		fontWeight: '700'
 	},
 	leading: {
+		color: 'black',
 		fontSize: 13,
 		color: 'grey',
 		fontWeight: '400'

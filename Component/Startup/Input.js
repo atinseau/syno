@@ -11,7 +11,9 @@ const Input = ({
 	placeholder = "Placeholder", 
 	type= "email-address", 
 	viewStyle = {},
-	inputStyle = {},
+	inputStyle = {
+		padding: 0
+	},
 	textStyle = {},
 	onChange = () => {},
 	onFocus = () => {}, 

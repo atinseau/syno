@@ -24,6 +24,8 @@ const req = async (endpoint = "", body = {}, method = "POST") => {
 		console.log("DATA: " + JSON.stringify(e))
 		return null
 	}
+
+	console.log("after")
 }
 
 const getWord = async () => {
@@ -60,7 +62,7 @@ const getDicoDefinition = async (word) => {
 		const $ = cheerio.load(data)
 
 		if ($('.icon-warning-sign').length != 0 || $('.icon-question-sign').length != 0)
-			return null
+			throw null
 		$('.BlocDefinition .lienconj').remove()
 		$('.BlocDefinition li.DivisionDefinition p.LibelleSynonyme').remove()
 		$('.BlocDefinition li.DivisionDefinition p.Synonymes').remove()
@@ -81,7 +83,7 @@ const getDicoDefinition = async (word) => {
 			}
 			defs.push({
 				type: "text",
-				content: el.text().replaceAll('\n', '').replaceAll('\t', '')
+				content: el.text().replace(/\n/g, '', '').replace(/\t/g, '')
 			})
 		})
 		return {

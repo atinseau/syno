@@ -5,6 +5,8 @@ import Error from "../../Tool/Error";
 import Loader from "../../Tool/Loader";
 import Word from "../Discover/Word";
 
+import { RED } from "@env"
+
 /**
  * @typedef {Object} Word
  * @property {String} id - UUID of the word
@@ -41,10 +43,11 @@ const Syno = ({ word = {}, setWord }) => {
 	}, [])
 
 	return (!synos.length && !err) ? <Loader/> :  (!err ? <View style={styles.view}>
-		<View style={{backgroundColor: "#ef786b", padding: 20, marginBottom: 10, borderRadius: 20}}>
+		<View style={{backgroundColor: RED, padding: 20, borderRadius: 20}}>
 			<Text style={{fontSize: 20, fontWeight: '700', color: "white"}}>Il y a {synos.length} synonymes</Text>
+			<Text style={{fontSize: 12, fontWeight: '300', color: "white", marginTop: 5}}>Cliquez sur un mot et signaler le si il n'est pas pertinant</Text>
 		</View>
-		<ScrollView style={{ marginBottom: 20, flex: 1 }}>
+		<ScrollView style={{ marginTop: 20, marginBottom: 20, flex: 1 }}>
 			{synos.map((syno, id) => <Word key={id} data={syno} fontSize={18} textStyle={styles.word} onPress={() => {
 				setWord(syno)
 			}}/> )}

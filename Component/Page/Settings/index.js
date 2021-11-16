@@ -5,6 +5,7 @@ import { api } from "../../../store";
 import { SvgBack, SvgRegularUser } from "../../Svg";
 import Loader from "../../Tool/Loader";
 
+import { BLUE } from "@env"
 
 const Settings = () => {
 
@@ -31,7 +32,6 @@ const Settings = () => {
 			{!user ? <Loader/> : <View>
 				<View style={header.view}>
 					<View style={header.backContainer}>
-						<SvgBack style={header.back}/>
 						<Text style={header.text}>Réglage utilisateur</Text>
 					</View>
 					<View style={header.svgContainer}>
@@ -44,7 +44,7 @@ const Settings = () => {
 								navigator.navigate('Home')
 							})
 						}}>
-							<Text>Déconnexion</Text>
+							<Text style={{color: 'black', marginTop: 10}}>Déconnexion</Text>
 						</Pressable>
 					</View>
 				</View>
@@ -60,6 +60,7 @@ const header = StyleSheet.create({
 		alignItems: 'center'
 	},
 	text: {
+		color: 'black',
 		fontWeight: '700',
 		fontSize: 16
 	},
@@ -69,14 +70,6 @@ const header = StyleSheet.create({
 		justifyContent: 'center',
 		flexDirection: 'row',
 	},
-	back: {
-		color: '#a1bce9',
-		top: -5,
-		left: 20,
-		position: 'absolute',
-		width: 30,
-		height: 30,
-	},
 	svgContainer: {
 		padding: 20,
 		borderRadius: 20,
@@ -84,7 +77,7 @@ const header = StyleSheet.create({
 		backgroundColor: '#f7f7f7'
 	},
 	svg: {
-		color: '#a1bce9',
+		color: BLUE,
 		width: 50,
 		height: 50
 	}

@@ -1,6 +1,6 @@
 import React from "react";
 import { useStoreActions } from "easy-peasy";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 
 
 const DiscoverControl = ({ rootNavigation, sessionCount = 0, sessionIndex = 0, prevPage = () => {}, nextPage = () => {} }) => {
@@ -21,12 +21,12 @@ const DiscoverControl = ({ rootNavigation, sessionCount = 0, sessionIndex = 0, p
 				</Pressable>
 			</View>
 
-			<Pressable onPress={() => {
+			{Platform.OS == 'ios' ? <Pressable onPress={() => {
 				setNavigationMode('modal')
 				rootNavigation.navigate('Home')
 			}} style={styles.leave}>
 				<Text style={{...styles.text, paddingVertical: 10, color: 'white'}}>Quitter</Text>
-			</Pressable>
+			</Pressable> : null}
 		</View>
 	)
 }
@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
 	},
 	group: {
 		marginHorizontal: 10,
+		marginBottom: 10,
 		flexDirection: 'row'
 	},
 	container: {
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
 		borderRadius: 20,
 		fontSize: 16,
 		fontWeight: '700',
-		paddingVertical: 20,
+		paddingVertical: (Platform.OS === 'ios' ? 20 : 15),
 		paddingHorizontal: 20
 	}
 })

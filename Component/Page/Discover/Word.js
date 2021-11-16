@@ -3,7 +3,7 @@
 import { useNavigation } from "@react-navigation/core"
 import React, { useState } from "react"
 import { Pressable, StyleSheet, Text, View } from "react-native"
-import { SvgBookMark, SvgCheckBookMark } from "../../Svg"
+import { SvgBookMark, SvgCheckBookMark, SvgSetting } from "../../Svg"
 
 
 const Word = ({
@@ -12,7 +12,9 @@ const Word = ({
 		fontSize = 30,
 		canSave = false,
 		viewStyle = {},
-		textStyle = {},
+		textStyle = {
+			color: 'black'
+		},
 		onPress = null
 }) => {
 
@@ -31,9 +33,16 @@ const Word = ({
 				<Text style={{...styles.text, ...textStyle, fontSize: fontSize }}>{data.word}</Text>
 			</Pressable>
 
-			{canSave ? <Pressable onPress={() => setSave(!save)}>
-				{!save ? <SvgBookMark style={styles.svg}/> : <SvgCheckBookMark style={styles.svg}/>}
-			</Pressable> : null}
+			{canSave ? 
+			<View style={{flexDirection: 'row'}}>
+				<Pressable style={{marginRight: 10}}>
+					<SvgSetting style={styles.svg}/>
+				</Pressable>
+
+				<Pressable onPress={() => setSave(!save)}>
+					{!save ? <SvgBookMark style={styles.svg}/> : <SvgCheckBookMark style={styles.svg}/>}
+				</Pressable>
+			</View> : null}
 		</View>
 	)
 }

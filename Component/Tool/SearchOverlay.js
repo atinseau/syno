@@ -67,7 +67,7 @@ const SearchOverlay = ({toggle = () => {}, isOpen = true}) => {
 			/>
 			{results.length ? 
 			<View style={result.view} onPress={leave}>
-				<ScrollView style={result.scroll}>
+				<ScrollView style={result.scroll} showsVerticalScrollIndicator={false} contentContainerStyle={{borderRadius: 10, overflow: 'hidden'}}>
 					{results.map((word, id) => <View key={id} style={{...result.card,
 					... (id == results.length - 1) ? {
 						borderBottomEndRadius: 10,
@@ -87,11 +87,13 @@ const SearchOverlay = ({toggle = () => {}, isOpen = true}) => {
 
 const result = StyleSheet.create({
 	view: {
+		overflow: 'hidden',
+		borderRadius: 10,
 		marginBottom: 20,
-		flex: 1,
-		borderRadius: 10
+		flex: 1
 	},
 	scroll: {
+		overflow: 'hidden',
 		borderRadius: 10
 	},
 	card: {
@@ -120,10 +122,11 @@ const overlay = StyleSheet.create({
 		paddingHorizontal: 20
 	},
 	inputView: {
-		marginTop: 80,
+		marginTop: 40,
 		marginBottom: 20
 	},
 	input: {
+		padding: 0,
 		fontSize: 22
 	}, 
 	text: {

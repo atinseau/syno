@@ -2,6 +2,8 @@ import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import Error from "../../Tool/Error";
 
+import { YELLOW } from "@env"
+
 const Def = ({ definitions = [], catgram = "", originDef = "" }) => {
 	return (
 		<View style={styles.body}>
@@ -31,7 +33,7 @@ const styles = StyleSheet.create({
 	},
 	view: {
 		borderRadius: 20,
-		backgroundColor: '#e8915c',
+		backgroundColor: YELLOW,
 		padding: 20
 	},
 	heading: {
@@ -53,7 +55,8 @@ const styles = StyleSheet.create({
 	},
 	defs: {
 		flex: 1,
-		marginTop: 40
+		marginTop: 20,
+		marginBottom: 20
 	},
 	def: {
 		fontWeight: '300', 

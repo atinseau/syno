@@ -1,7 +1,8 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
+import { useStoreActions } from 'easy-peasy'
 import SearchOverlay from '../../Tool/SearchOverlay';
 import Definition from '../Definition';
 
@@ -9,6 +10,9 @@ import Feature from './Feature';
 import Header from './Header';
 import Session from './Session';
 import Suggestion from './Suggestion';
+
+import { BLUE, PURPLE, YELLOW, RED } from '@env'
+import { SvgBook, SvgMemory, SvgTicket, SvgTraning } from '../../Svg';
 
 const DiscoverStack = createNativeStackNavigator()
 const defaultView = {
@@ -18,18 +22,68 @@ const defaultView = {
 	}
 }
 
-
-const Root = ({rootNavigation}) => {
+const Root = ({ rootNavigation }) => {
 
 	const [overlay, setOverlay] = useState(false)
-	const featureRef = useRef([])
+	const setNavigationMode = useStoreActions((actions) => actions.setNavigationMode)
+
+	const [features, setFeatures] = useState([
+		{
+			name: "Découvrir",
+			title: "Nouveau synonyme",
+			content: "Découvrir 5 nouveau mots",
+			color: PURPLE,
+			svg: SvgBook,
+			active: true,
+			callback: () => {
+				setNavigationMode('push')
+				rootNavigation.navigate('Discover')
+			}
+		},
+		{
+			name: "Entrainement",
+			title: "Devenir meilleur",
+			content: "Citez le plus de synonyme possible",
+			svg: SvgTraning,
+			color: YELLOW,
+			active: false,
+			callback: () => {
+				setNavigationMode('push')
+				rootNavigation.navigate('Training')
+			}
+		},
+		{
+			name: "Apprentissage",
+			title: "Bonne mémoire",
+			content: "Restituez une suite de synonyme",
+			svg: SvgMemory,
+			color: BLUE,
+			active: false,
+			callback: () => {
+				setNavigationMode('push')
+				rootNavigation.navigate('Learning')
+			}
+		},
+		{
+			name: "Révision",
+			title: "Il faut revisé",
+			content: "L'entrainement mais sans surprise",
+			svg: SvgTicket,
+			color: RED,
+			active: false,
+			callback: () => {
+				setNavigationMode('push')
+				rootNavigation.navigate('Review')
+			}
+		}
+	]) 
 
 	return (
 		<SafeAreaView style={{flex: 1}}>
 			<View style={styles.home}>
 				<Header toggle={setOverlay}></Header>
-				<Feature ref={featureRef}></Feature>
-				<Session featureRef={featureRef} navigation={rootNavigation}></Session>
+				<Feature features={features} setFeatures={setFeatures}></Feature>
+				<Session currentFeature={features.find(e => e.active)}/>
 				<Suggestion rootNavigation={rootNavigation}></Suggestion>
 			</View>
 			{overlay ? <SearchOverlay toggle={setOverlay} isOpen={overlay}/> : null}
@@ -68,7 +122,8 @@ const Home = ({ navigation }) => {
 
 const styles = StyleSheet.create({
 	home: {
-		marginTop: 40,
+		flex: 1,
+		marginTop: 20,
 		marginLeft: 20,
 		marginRight: 20
 	}

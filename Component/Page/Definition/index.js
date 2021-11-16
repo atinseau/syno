@@ -110,7 +110,6 @@ const Definition = ({ route }) => {
 }
 
 
-
 const styles = StyleSheet.create({
 	main: {
 		height: '100%'

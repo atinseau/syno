@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 import { api } from "../../../store";
 import { SvgHistory, SvgRandom, SvgTest, SvgSetting } from "../../Svg";
 
+import { RED, PURPLE, YELLOW, BLUE } from "@env"
 
 const Suggestion = ({ rootNavigation }) => {
 
@@ -14,7 +15,7 @@ const Suggestion = ({ rootNavigation }) => {
 			name: "La dernière session",
 			time: "5 minutes",
 			logo: SvgHistory,
-			color: '#ef786b'
+			color: RED
 		},
 		{
 			name: "Mot aléatoire",
@@ -24,13 +25,13 @@ const Suggestion = ({ rootNavigation }) => {
 			},
 			time: "1 minutes",
 			logo: SvgRandom,
-			color: '#5447b6'
+			color: PURPLE
 		},
 		{
 			name: "L'heure du test",
 			time: "15 minutes",
 			logo: SvgTest,
-			color: '#e8915c'
+			color: YELLOW
 		},
 		{
 			name: "Réglage utilisateur",
@@ -39,7 +40,7 @@ const Suggestion = ({ rootNavigation }) => {
 			},
 			time: "1 minutes",
 			logo: SvgSetting,
-			color: "#a1bce9"
+			color: BLUE
 		}
 	]
 
@@ -47,7 +48,9 @@ const Suggestion = ({ rootNavigation }) => {
 		<View style={styles.main}>
 			<Text style={styles.heading}>Recommendation</Text>
 			<ScrollView style={styles.container}>
-				{suggestions.map((suggestion, index) => <Pressable style={card.button} key={index} onPress={() => 
+				{suggestions.map((suggestion, index) => <Pressable style={{...card.button, 
+					marginBottom: (index == suggestions.length - 1) ? 20 : 12,
+				}} key={index} onPress={() => 
 				(typeof suggestion.callback == 'function') ? suggestion.callback() : null }>
 					<View style={{...card.imageContainer, backgroundColor: suggestion.color}}>
 						<suggestion.logo style={card.image}></suggestion.logo>
@@ -64,6 +67,7 @@ const Suggestion = ({ rootNavigation }) => {
 
 const styles = StyleSheet.create({
 	main: {
+		flex: 1,
 		marginTop: 30
 	},
 	heading: {
@@ -71,7 +75,7 @@ const styles = StyleSheet.create({
 		fontWeight: '800'
 	},
 	container: {
-		height: '100%',
+		flex: 1,
 		marginTop: 16
 	}
 })

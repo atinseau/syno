@@ -4,6 +4,8 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { SvgError } from "../Svg";
 
+import { RED } from "@env"
+
 const Error = ({msg = "Il y a une erreur..."}) => {
 	return (
 		<View style={styles.error}>
@@ -21,7 +23,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	svg: {
-		color: '#ef786b',
+		color: RED,
 		width: 100,
 		height: 100
 	},

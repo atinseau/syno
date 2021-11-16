@@ -11,6 +11,9 @@ import SvgUser from "./SvgUser";
 import SvgBookMark from "./SvgBookMark";
 import SvgCheckBookMark from "./SvgCheckBookMark";
 import SvgError from "./SvgError";
+import SvgTraning from "./SvgTraning";
+import SvgMemory from "./SvgMemory";
+import SvgTicket from "./SvgTicket";
 
 export {
 	SvgBack,
@@ -25,5 +28,8 @@ export {
 	SvgSetting,
 	SvgBookMark,
 	SvgCheckBookMark,
-	SvgError
+	SvgError,
+	SvgTraning,
+	SvgMemory,
+	SvgTicket
 }

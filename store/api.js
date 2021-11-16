@@ -6,6 +6,9 @@ import { DEF } from '@env'
 import { store } from '.';
 
 const req = async (endpoint = "", body = {}, method = "POST") => {
+
+	console.log("Request: " + API)
+
 	try {
 		let data = null
 		if (method == "GET")
@@ -20,12 +23,9 @@ const req = async (endpoint = "", body = {}, method = "POST") => {
 		return data
 	} catch (e) {
 		console.log("API FETCH ERROR")
-		console.log("FAILED ENPOINT: " + endpoint)
 		console.log("DATA: " + JSON.stringify(e))
 		return null
 	}
-
-	console.log("after")
 }
 
 const getWord = async () => {

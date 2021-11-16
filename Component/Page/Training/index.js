@@ -1,16 +1,18 @@
 
 
 import React from "react"
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, KeyboardAvoidingView} from 'react-native'
 import Input from "../../Startup/Input"
 
 
 const Training = () => {
 	return (
-		<View style={styles.view}>
+		<KeyboardAvoidingView behavior={'padding'} style={{flex: 1}}>
+			<View style={styles.view}>
 			
-			<Input viewStyle={styles.inputView}/>
-		</View>
+				<Input viewStyle={styles.inputView}/>
+			</View>
+		</KeyboardAvoidingView>
 	)
 }
 

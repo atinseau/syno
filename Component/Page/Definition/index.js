@@ -19,9 +19,11 @@ const Definition = ({ route }) => {
 	const [originDef, setOriginDef] = useState(null)
 	const [definitions, setDefinitions] = useState([])
 	const [err, setError] = useState(false)
+	const [canSynonym, setCanSynonym] = useState(false)
 
 	useEffect(() => {
 		(async () => setWord(await api.getWordById(route.params.id)))()
+		if (route.params.canSynonym) setCanSynonym(true)
 	}, [])
 
 	const clear = () => {
@@ -96,12 +98,12 @@ const Definition = ({ route }) => {
 						}}>Mot précedent</Text>
 					</Pressable> : null}
 					<Text style={{...styles.leading, marginTop: (!history.length) ? 40: 30}}>Mot:</Text>
-					<Word data={word} canSave={true} fontSize={30}/>
+					<Word data={word} canSave={true} canSetting={true} fontSize={30}/>
 				</View>
 
 				<Menu>
 					<Def definitions={definitions} catgram={catgram} originDef={originDef}/>
-					<Syno word={word} setWord={secureSetWord}/>
+					{canSynonym ? <Syno word={word} setWord={secureSetWord}/> : null}
 				</Menu>
 				
 			</View>}

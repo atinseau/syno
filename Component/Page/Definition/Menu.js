@@ -13,9 +13,9 @@ const Menu = ({ children }) => {
 					<Text style={{...menu.text, ...(page == 0) ? menu.active : {}}}>Definitions:</Text>
 				</Pressable>
 
-				<Pressable style={menu.item} onPress={() => { setPage(1) }}>
+				{nth.length > 1 ? 	<Pressable style={menu.item} onPress={() => { setPage(1) }}>
 					<Text style={{...menu.text, ...(page == 1) ? menu.active : {}}}>Synonymes:</Text>
-				</Pressable>
+				</Pressable>: null}
 			</View>
 
 			{nth[page]}

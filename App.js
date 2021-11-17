@@ -23,6 +23,7 @@ import Startup from "./Component/Startup/index";
 import Loader from "./Component/Tool/Loader";
 import Discover from "./Component/Page/Discover";
 import Training from "./Component/Page/Training";
+import Finish from "./Component/Page/Finish";
 
 const HomeStack = createNativeStackNavigator()
 const defaultView = {
@@ -79,6 +80,7 @@ const Root = () => {
 					<HomeStack.Screen component={Settings} name="Settings" options={defaultView}/>
 					<HomeStack.Screen component={Discover} name="Discover" options={defaultView}/>
 					<HomeStack.Screen component={Training} name="Training" options={defaultView}/>
+					<HomeStack.Screen component={Finish} name="Finish" options={defaultView}/>
 					{/* AUTH CONTROLLER GUARD */}
 					<HomeStack.Screen component={Startup} name="Startup" options={{...defaultView, gestureEnabled: isAuth}}/>
 					</> : 

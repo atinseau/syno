@@ -21,7 +21,7 @@ const Suggestion = ({ rootNavigation }) => {
 			name: "Mot aléatoire",
 			callback: async () => {
 				const word = await api.getWord()
-				navigation.navigate("definition", { id: word.id })
+				navigation.navigate("definition", { id: word.id, canSynonym: true })
 			},
 			time: "1 minutes",
 			logo: SvgRandom,

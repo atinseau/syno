@@ -3,14 +3,17 @@
 import { useNavigation } from "@react-navigation/core"
 import React, { useState } from "react"
 import { Pressable, StyleSheet, Text, View } from "react-native"
-import { SvgBookMark, SvgCheckBookMark, SvgSetting } from "../../Svg"
+import { SvgBookMark, SvgCheckBookMark, SvgError, SvgSetting } from "../../Svg"
 
+import { RED } from '@env'
 
 const Word = ({
 		data,
 		isSaved = false,
 		fontSize = 30,
 		canSave = false,
+		canSetting = false,
+		canSynonym = true,
 		viewStyle = {},
 		textStyle = {
 			color: 'black'
@@ -23,7 +26,8 @@ const Word = ({
 	
 	const goDefinition = () => {
 		navigation.navigate('definition', {
-			id: data.id
+			id: data.id,
+			canSynonym
 		})
 	}
 
@@ -33,16 +37,15 @@ const Word = ({
 				<Text style={{...styles.text, ...textStyle, fontSize: fontSize }}>{data.word}</Text>
 			</Pressable>
 
-			{canSave ? 
-			<View style={{flexDirection: 'row'}}>
-				<Pressable style={{marginRight: 10}}>
-					<SvgSetting style={styles.svg}/>
-				</Pressable>
-
-				<Pressable onPress={() => setSave(!save)}>
+			{ canSave || canSetting ? 	<View style={{flexDirection: 'row'}}>
+				{canSetting ? <Pressable style={{marginRight: 10}}>
+					<SvgError style={{...styles.svg, color: RED}}/>
+				</Pressable>: null}
+				{canSave ? <Pressable onPress={() => setSave(!save)}>
 					{!save ? <SvgBookMark style={styles.svg}/> : <SvgCheckBookMark style={styles.svg}/>}
-				</Pressable>
-			</View> : null}
+				</Pressable>: null}
+			</View>: null}
+
 		</View>
 	)
 }

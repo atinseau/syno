@@ -5,6 +5,30 @@ import { API } from '@env'
 import { DEF } from '@env'
 import { store } from '.';
 
+/**
+ * @typedef {Object} Definition
+ * @property {String} catgram
+ * @property {String} origin_def
+ * @property {Object[]} defs
+ */
+
+/**
+ * @typedef {Object} Word
+ * @property {String} id - UUID of the word
+ * @property {String} word - The word
+ * @property {String[]} synonym_ids - All of the linked synonyms (UUID)
+ * @property {Definition} definition - The definition of the word
+ */
+
+/**
+ * @typedef {Object} User 
+ * @property {String} username - The username
+ * @property {String} email - The email
+ * @property {String} token - The token
+ * @property {String[]} saved_word - The saved words
+ */
+
+
 const req = async (endpoint = "", body = {}, method = "POST") => {
 
 	console.log("Request: " + API)
@@ -28,6 +52,10 @@ const req = async (endpoint = "", body = {}, method = "POST") => {
 	}
 }
 
+
+/**
+ * @returns {Word}
+ */
 const getWord = async () => {
 	const token = await store.getItem('token')
 	const data = await req("/word/random", { token })
@@ -39,12 +67,21 @@ const getWord = async () => {
 	
 }
 
+/**
+ * @param {String} wordId 
+ * @returns {Word}
+ */
 const getWordById = async (wordId) => {
 	const token = await store.getItem('token')
 	const data = await req("/word/by-id", { token, id: wordId })
 	return data
 }
 
+
+/**
+ * @param {String[]} ids 
+ * @returns {Word[]}
+ */
 const getSynonyms = async (ids = []) => {
 	const token = await store.getItem('token')
 	const synos = []
@@ -56,6 +93,11 @@ const getSynonyms = async (ids = []) => {
 	return synos
 }
 
+
+/**
+ * @param {String} word 
+ * @returns {Definition}
+ */
 const getDicoDefinition = async (word) => {
 	try {
 		const { data } = await axios.get(DEF + word)
@@ -97,6 +139,10 @@ const getDicoDefinition = async (word) => {
 	}
 }
 
+/**
+ * @param {String} wordId 
+ * @returns {Definition}
+ */
 const getDefinition = async (wordId) => {
 	const data = await req("/definition/by-word-id", {
 		token: await store.getItem('token'),
@@ -107,12 +153,8 @@ const getDefinition = async (wordId) => {
 
 
 /**
- * 
  * @param {String} wordId 
- * @param {Object} definition 
- * @param {String} definition.catgram
- * @param {String} definition.origin_def
- * @param {Object[]} definition.defs
+ * @param {Definition} definition 
  */
 const insertDefinition = async (wordId, definition) => {
 	const token = await store.getItem('token')
@@ -129,6 +171,9 @@ const insertDefinition = async (wordId, definition) => {
 
 // USER
 
+/**
+ * @returns {User}
+ */
 const isAuth  = () => {
 	return new Promise(async (resolve, reject) => {
 		const token = await store.getItem('token')

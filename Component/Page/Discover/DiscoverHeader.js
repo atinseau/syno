@@ -14,8 +14,6 @@ const DiscoverHeader = ({ sessionCount = 0, sessionIndex = 0 }) => {
 	)
 }
 
-
-
 const styles = StyleSheet.create({
 	header: {
 		flexDirection: 'row',

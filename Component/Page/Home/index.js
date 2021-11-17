@@ -13,6 +13,7 @@ import Suggestion from './Suggestion';
 
 import { BLUE, PURPLE, YELLOW, RED } from '@env'
 import { SvgBook, SvgMemory, SvgTicket, SvgTraning } from '../../Svg';
+import DefinitionController from '../Definition/Controller';
 
 const DiscoverStack = createNativeStackNavigator()
 const defaultView = {
@@ -22,7 +23,7 @@ const defaultView = {
 	}
 }
 
-const Root = ({ rootNavigation }) => {
+const Home = ({ navigation }) => {
 
 	const [overlay, setOverlay] = useState(false)
 	const setNavigationMode = useStoreActions((actions) => actions.setNavigationMode)
@@ -37,7 +38,7 @@ const Root = ({ rootNavigation }) => {
 			active: true,
 			callback: () => {
 				setNavigationMode('push')
-				rootNavigation.navigate('Discover')
+				navigation.navigate('Discover')
 			}
 		},
 		{
@@ -49,7 +50,7 @@ const Root = ({ rootNavigation }) => {
 			active: false,
 			callback: () => {
 				setNavigationMode('push')
-				rootNavigation.navigate('Training')
+				navigation.navigate('Training')
 			}
 		},
 		{
@@ -61,7 +62,7 @@ const Root = ({ rootNavigation }) => {
 			active: false,
 			callback: () => {
 				setNavigationMode('push')
-				rootNavigation.navigate('Learning')
+				navigation.navigate('Learning')
 			}
 		},
 		{
@@ -73,52 +74,25 @@ const Root = ({ rootNavigation }) => {
 			active: false,
 			callback: () => {
 				setNavigationMode('push')
-				rootNavigation.navigate('Review')
+				navigation.navigate('Review')
 			}
 		}
 	]) 
 
 	return (
-		<SafeAreaView style={{flex: 1}}>
-			<View style={styles.home}>
-				<Header toggle={setOverlay}></Header>
-				<Feature features={features} setFeatures={setFeatures}></Feature>
-				<Session currentFeature={features.find(e => e.active)}/>
-				<Suggestion rootNavigation={rootNavigation}></Suggestion>
-			</View>
-			{overlay ? <SearchOverlay toggle={setOverlay} isOpen={overlay}/> : null}
-		</SafeAreaView>
+		<DefinitionController>
+			<SafeAreaView style={{flex: 1}}>
+				<View style={styles.home}>
+					<Header toggle={setOverlay}></Header>
+					<Feature features={features} setFeatures={setFeatures}></Feature>
+					<Session currentFeature={features.find(e => e.active)}/>
+					<Suggestion rootNavigation={navigation}></Suggestion>
+				</View>
+				{overlay ? <SearchOverlay toggle={setOverlay} isOpen={overlay}/> : null}
+			</SafeAreaView>
+		</DefinitionController>
 	)
 }
-
-const Home = ({ navigation }) => {
-
-	// const update = useStoreState((state) => state.update)
-
-	// useEffect(() => {
-	// 	console.log("Home")
-	// 	api.isAuth().catch(() => {
-	// 		navigation.navigate('Startup')
-	// 	})
-	// }, [update])
-
-	return (
-		<NavigationContainer independent={true}>
-			<DiscoverStack.Navigator
-				initialRouteName="root"
-				screenOptions={{
-					presentation: 'modal',
-					headerBackVisible: false
-				}}>
-				<DiscoverStack.Screen name="root" options={defaultView}>
-					{() => <Root rootNavigation={navigation}/>}
-				</DiscoverStack.Screen>
-				<DiscoverStack.Screen name="definition" component={Definition} options={defaultView}/>
-			</DiscoverStack.Navigator>
-		</NavigationContainer>
-	)
-}
-
 
 const styles = StyleSheet.create({
 	home: {

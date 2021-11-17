@@ -14,6 +14,8 @@ import SvgError from "./SvgError";
 import SvgTraning from "./SvgTraning";
 import SvgMemory from "./SvgMemory";
 import SvgTicket from "./SvgTicket";
+import SvgCheck from "./SvgCheck";
+import SvgStop from "./SvgStop";
 
 export {
 	SvgBack,
@@ -31,5 +33,7 @@ export {
 	SvgError,
 	SvgTraning,
 	SvgMemory,
-	SvgTicket
+	SvgTicket,
+	SvgCheck,
+	SvgStop
 }

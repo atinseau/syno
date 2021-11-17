@@ -32,7 +32,7 @@ const Syno = ({ word = {}, setWord }) => {
 		;(async () => {
 			if (!word.synonym_ids || !word.synonym_ids.length) {
 				if (mounted)
-					setError(true)
+					return setError(true)
 			}
 			const result = await api.getSynonyms(word.synonym_ids)
 			if (mounted)
